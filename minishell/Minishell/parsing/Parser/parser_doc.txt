@@ -1,0 +1,56 @@
+Le parser sert a parcourir les tokens et a parser l'input.
+(difficile a deviner je sais)
+Le parser est un automate avec un certain nombre d etat.
+->voir le shema de https://github.com/rabouzia/minihell
+
+en gros, l automate """"reflechis"""" et nous dis si un
+input est bon ou non.
+
+Bon si t as regarder le shema, tu auras compris que l on ne
+peut pas aller dans n importe quel etat.
+exemple: Le debut d'un input est soit un mot, soit une redirection
+(ls ou <<), et si c est par exemple un pipe, ce n est pas possible,
+donc le parser quitte automatiquement.
+
+SUBTILITE: Pour les heredocs, ceux ci doivent etre ouverts au fur et
+a mesure du parsing. exemple: la commande: << chat | lsdfdf
+cree un heredoc et redirige l input dans la commande lsdfdf,
+qui n existe pas. (teste la commande pour bien comprendre)
+Les heredocs doivent donc etre fait au fur et a mesure.
+
+ainsi, pour l'exec, << chat, qui sont deux tokens, se transforme en
+un seul token, qui est un fichier. Les tokens sont a la fois sous
+forme de liste chainee (t_vars->head) et de tableau(t_vars->command_table).
+A toi de voir comment tu veux faire. A la fin, j'aurai besoin d'un tableau.
+Tu peux automatiquement convertir une liste chainee en tableau avec
+la fonction get_command_table, qui est dans le fichier lexer_utils.c
+
+Les heredocs seront stockes dans une liste chainee pour me faciliter
+la tache. Je m'occuperai des heredocs. Apres le parsing, les hd
+seront consideres comme un fichier. (par exemple, cat Makefile
+affiche le Makefile, mais si les permissions ne sont pas bonne,
+alors le parser quitte minishell).
+En gros, toi fait un truc du type:
+
+if (token == <<  && token + 1 == Word)
+{
+    get_heredoc(); // gere le hd et le stocke dans vars->heredoc
+    supprimer token et token + 1;
+    obtenir le nouveau token de type hd et le mettre ou il faut;
+}
+
+De plus, il ne peut y avoir que 16 heredoc max (source: tkt frr jlai
+vu jsplus ou mais tkt frr).
+
+Pour les heredocs j aurai aussi besoin d une photo des fesses
+de ton mec haha tsais c pour minishell pas du tout pour moi tsais
+enfin moi jsuis pas professionnel mais c ecrit dans la doc de bash
+donc faut faire confiance aux professionnels quoi, bref envoie dessuite.
+
+Une fois que le parsing est ok, ensemble, nous feront les redirections.
+Je te dirai ce que je veux.
+
+N'hesite pas a utiliser une structure pour t aider dans le parsing
+comme j ai fait dans le lexer.
+
+Ensuite, place a l'expander.
