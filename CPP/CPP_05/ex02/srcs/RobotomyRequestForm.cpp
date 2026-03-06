@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 14:19:57 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/03 16:08:45 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/06 23:38:47 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,11 @@
 #include <cstdlib>
 #include <ctime>
 
-static bool srand_seeded = (std::srand(static_cast<unsigned int>(std::time(NULL))), true);
-
 RobotomyRequestForm::RobotomyRequestForm(const std::string& t)
 	: AForm("RobotomyRequestForm", 72, 45)
 	, target(t)
 {
+	std::srand(std::time(NULL));
 	// std::cout << "RobotomyRequestForm: Default constructor called" << std::endl;
 }
 
