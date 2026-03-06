@@ -6,16 +6,16 @@
 #    By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/07 23:12:24 by krfranco          #+#    #+#              #
-#    Updated: 2026/03/06 23:20:23 by krfranco         ###   ########.fr        #
+#    Updated: 2026/03/07 00:31:37 by krfranco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Serializer
+NAME = Base
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp srcs/Base.cpp srcs/A.cpp srcs/B.cpp srcs/C.cpp
+SRCS = main.cpp srcs/Base.cpp
 OBJS = ${SRCS:.cpp=.o}
 
 all: ${NAME}
