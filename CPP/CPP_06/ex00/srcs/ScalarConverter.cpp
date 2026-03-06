@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 17:17:56 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/06 05:41:45 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/06 05:54:42 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,11 @@ void printPseudo(const std::string& input)
 
 static bool isIntegral (double v)
 {
+	 if (v != v) // NaN
+        return false;
+    if (v > static_cast<double>(std::numeric_limits<long>::max()) ||
+        v < static_cast<double>(std::numeric_limits<long>::min()))
+        return false;
 	return (v == static_cast<double>(static_cast<long>(v)));
 }
 
@@ -361,7 +366,11 @@ void printFloat(const std::string& input)
 		std::cout << "char: impossible" << std::endl;
 		std::cout << "int: impossible" << std::endl;
 		std::cout << "float: " << (str < 0 ? "-inff" : "+inff") << std::endl;
-		std::cout << "double: " << str << std::endl;
+		std::cout << "double: ";
+		if (isIntegral(str))
+			std::cout << static_cast<long>(str) << ".0" << std::endl;
+		else
+			std::cout << str << std::endl;
 		return;
 	}
 
