@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 17:17:56 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/06 05:54:42 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/06 17:34:10 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,6 @@ ScalarConverter::~ScalarConverter() {}
 
 const char* ScalarConverter::invalidInput::what() const throw(){
 	return "Invalid input";
-}
-
-const char* ScalarConverter::Overflow::what() const throw(){
-	return "Overflow";
 }
 
 bool pseudo_float(const std::string& input)
@@ -224,7 +220,9 @@ static bool isIntegral (double v)
         return false;
     if (v > static_cast<double>(std::numeric_limits<long>::max()) ||
         v < static_cast<double>(std::numeric_limits<long>::min()))
+	{
         return false;
+	}
 	return (v == static_cast<double>(static_cast<long>(v)));
 }
 
@@ -252,42 +250,6 @@ void printChar(const std::string& input, int type)
 		std::cout << static_cast<long>(c) << ".0" << std::endl;
 	else
 		std::cout << c << std::endl;
-}
-
-void printInt(const std::string& input)
-{
-	int min = std::numeric_limits<int>::min();
-	int max = std::numeric_limits<int>::max();
-	errno = 0;
-	long str = std::strtol(input.c_str(),NULL, 10);
-
-	if (errno == ERANGE)
-		throw ScalarConverter::Overflow();
-	if (str < static_cast<long>(min) || str > static_cast<long>(max))
-		throw ScalarConverter::Overflow();
-	if (str < 0 || str > 127)
-		std::cout << "char: impossible" << std::endl;
-	else
-	{
-		unsigned char c = static_cast<unsigned char>(str);
-		if (!std::isprint(c))
-			std::cout << "char: Non displayable" << std::endl;
-		else
-			std::cout << "char: '" << static_cast<char>(c)<< "'" << std::endl;
-	}
-	std::cout << "int: " << static_cast<int>(str) << std::endl;
-
-	std::cout << "float: ";
-	if (isIntegral(str))
-		std::cout << static_cast<long>(str) << ".0f" << std::endl;
-	else
-		std::cout << static_cast<float>(str) << "f" << std::endl;
-
-	std::cout << "double: ";
-	if (isIntegral(str))
-		std::cout << static_cast<long>(str) << ".0" << std::endl;
-	else
-		std::cout << str << std::endl;
 }
 
 void printDouble(const std::string& input)
@@ -402,6 +364,49 @@ void printFloat(const std::string& input)
 	else
 		std::cout << str << std::endl;
 }
+
+void printInt(const std::string& input)
+{
+	int min = std::numeric_limits<int>::min();
+	int max = std::numeric_limits<int>::max();
+	errno = 0;
+	long str = std::strtol(input.c_str(),NULL, 10);
+
+	if (errno == ERANGE)
+	{
+		printDouble(input);
+		return;
+	}
+	if (str < static_cast<long>(min) || str > static_cast<long>(max))
+	{
+		printDouble(input);
+		return;
+	}
+	if (str < 0 || str > 127)
+		std::cout << "char: impossible" << std::endl;
+	else
+	{
+		unsigned char c = static_cast<unsigned char>(str);
+		if (!std::isprint(c))
+			std::cout << "char: Non displayable" << std::endl;
+		else
+			std::cout << "char: '" << static_cast<char>(c)<< "'" << std::endl;
+	}
+	std::cout << "int: " << static_cast<int>(str) << std::endl;
+
+	std::cout << "float: ";
+	if (isIntegral(str))
+		std::cout << static_cast<long>(str) << ".0f" << std::endl;
+	else
+		std::cout << static_cast<float>(str) << "f" << std::endl;
+
+	std::cout << "double: ";
+	if (isIntegral(str))
+		std::cout << static_cast<long>(str) << ".0" << std::endl;
+	else
+		std::cout << str << std::endl;
+}
+
 
 void ScalarConverter::convert(const std::string& input)
 {

@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 17:18:04 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/06 05:21:08 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/06 17:23:41 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ class ScalarConverter
 		static void convert(const std::string& input);
 		
 		class invalidInput : public std::exception
-		{
-			public:
-				virtual const char* what() const throw();
-		};
-		class Overflow : public std::exception
 		{
 			public:
 				virtual const char* what() const throw();
