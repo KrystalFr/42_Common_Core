@@ -5,30 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 17:49:06 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/07 14:34:54 by krfranco         ###   ########.fr       */
+/*   Created: 2026/03/07 14:31:05 by krfranco          #+#    #+#             */
+/*   Updated: 2026/03/07 14:45:30 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/ScalarConverter.hpp"
+#include <iostream>
+#include "whatever.hpp"
 
-int main(int ac, char **av)
+int main ()
 {
-	if (ac != 2)
-	{
-		std::cout << "Invalid number of arguments, need: <"<< av[0] << "> <ToConvert>" << std::endl;
-		return 1;
-	}
-	
-	try 
-	{
-		ScalarConverter::convert(av[1]);
-	}
-		catch (const std::exception& e)
-	{
-		std::cout << "Impossible conversion: " << e.what() << std::endl;
-		return (1);
-	}
+	int a = 2;
+	int b = 3;
 
+	::swap(a, b);
+	std::cout << "a = " << a << ", b = " << b << std::endl;
+	std::cout << "min(a, b) = " << ::min(a, b) << std::endl;
+	std::cout << "max(a, b) = " << ::max(a, b) << std::endl;
+
+	std::string c = "chaine1";
+	std::string d = "chaine2";
+
+	::swap(c, d);
+	std::cout << "c = " << c << ", d = " << d << std::endl;
+	std::cout << "min(c, d) = " << ::min(c, d) << std::endl;
+	std::cout << "max(c, d) = " << ::max(c, d) << std::endl;
+	
 	return 0;
 }

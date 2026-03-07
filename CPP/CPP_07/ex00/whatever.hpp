@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   whatever.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/04 17:49:06 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/07 14:34:54 by krfranco         ###   ########.fr       */
+/*   Created: 2026/03/07 14:16:53 by krfranco          #+#    #+#             */
+/*   Updated: 2026/03/07 14:42:09 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "includes/ScalarConverter.hpp"
+#ifndef WHATEVER_H
+#define WHATEVER_H
 
-int main(int ac, char **av)
+template <typename T>
+void swap(T &a, T &b)
 {
-	if (ac != 2)
-	{
-		std::cout << "Invalid number of arguments, need: <"<< av[0] << "> <ToConvert>" << std::endl;
-		return 1;
-	}
-	
-	try 
-	{
-		ScalarConverter::convert(av[1]);
-	}
-		catch (const std::exception& e)
-	{
-		std::cout << "Impossible conversion: " << e.what() << std::endl;
-		return (1);
-	}
-
-	return 0;
+	T tmp = a;
+	a = b;
+	b = tmp;
 }
+
+template <typename T>
+T min(T &a, T &b)
+{
+	return (a < b ? a : b);
+}
+
+template <typename T>
+T max(T &a, T &b)
+{
+	return (a > b ? a : b);
+}
+#endif
