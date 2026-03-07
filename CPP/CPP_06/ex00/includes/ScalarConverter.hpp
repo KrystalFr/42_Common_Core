@@ -6,12 +6,12 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/04 17:18:04 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/06 17:23:41 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:47:54 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCALARCONVERTER_H
-# define SCALARCONVERTER_H
+#ifndef SCALARCONVERTER_HPP
+# define SCALARCONVERTER_HPP
 
 #include <string>
 #include <iostream>

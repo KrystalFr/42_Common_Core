@@ -6,12 +6,12 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 23:14:50 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/06 23:23:15 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:48:38 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef B_CPP
-# define B_CPP
+#ifndef B_HPP
+# define B_HPP
 
 #include "Base.hpp"
 

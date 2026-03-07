@@ -1,34 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Serializer.hpp                                     :+:      :+:    :+:   */
+/*   iter.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/06 17:44:19 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/07 14:48:09 by krfranco         ###   ########.fr       */
+/*   Created: 2026/03/07 14:47:12 by krfranco          #+#    #+#             */
+/*   Updated: 2026/03/07 14:49:25 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERIALIZER_HPP
-# define SERIALIZER_HPP
-
-#include <stdint.h>
-#include <iostream>
-#include "Data.hpp"
-
-class Serializer
-{
-
-	private:
-		Serializer();
-		Serializer(const Serializer& other);
-		Serializer& operator=(const Serializer& other);
-		~Serializer();
-	
-	public:
-		static uintptr_t serialize(Data *ptr);
-		static Data *deserialize(uintptr_t raw);
-};
-
-#endif
+#ifndef ITER_HPP

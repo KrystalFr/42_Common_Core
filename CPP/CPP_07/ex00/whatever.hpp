@@ -6,12 +6,12 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:16:53 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/07 14:42:09 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:49:20 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WHATEVER_H
-#define WHATEVER_H
+#ifndef WHATEVER_HPP
+#define WHATEVER_HPP
 
 template <typename T>
 void swap(T &a, T &b)

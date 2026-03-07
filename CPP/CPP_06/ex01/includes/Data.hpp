@@ -6,12 +6,12 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/06 20:21:43 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/06 22:29:49 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/07 14:48:11 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DATA_H
-#define DATA_H
+#ifndef DATA_HPP
+#define DATA_HPP
 
 struct Data
 {
