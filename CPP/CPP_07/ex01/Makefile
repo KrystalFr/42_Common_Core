@@ -6,11 +6,11 @@
 #    By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/07 23:12:24 by krfranco          #+#    #+#              #
-#    Updated: 2026/03/07 14:42:44 by krfranco         ###   ########.fr        #
+#    Updated: 2026/03/07 14:49:49 by krfranco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = whatever
+NAME = iter
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
