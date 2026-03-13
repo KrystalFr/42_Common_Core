@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:49:56 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/08 17:25:15 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/03/13 13:59:51 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int main()
 	int int_array[3] = {4, 5, 6};
     std::cout << "test for int: " << std::endl;
     ::iter(int_array, 3, printElement<int>);
+
     std::cout << "plusTen: " << std::endl;
     ::iter(int_array, 3, plusTen<int>);
     ::iter(int_array, 3, printElement<int>);
@@ -42,6 +43,7 @@ int main()
     double double_array[3] = {1.2, 3.4 ,5.6};
     std::cout << "\ntest for double: " << std::endl;
     ::iter(double_array, 3, printElement<double>);
+	
     std::cout << "plusTen: " << std::endl;
     ::iter(double_array, 3, plusTen<double>);
     ::iter(double_array, 3, printElement<double>);
