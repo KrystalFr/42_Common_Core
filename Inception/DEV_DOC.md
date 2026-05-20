@@ -22,6 +22,14 @@ Secrets and environment
   - `wp_admin_password.txt` — WordPress admin password (optional)
 - Non-sensitive configuration is in `srcs/.env` (database name, user, domain).
 
+You need to set the passwords in a secret file before building
+```bash
+mkdir -p secrets && \
+echo "rootpassword" > secrets/db_root_password.txt && \
+echo "userpassword" > secrets/db_password.txt && \
+echo "adminpassword" > secrets/wp_admin_password.txt
+```
+
 Example `srcs/.env`
 ```env
 DOMAIN_NAME=krfranco.42.fr

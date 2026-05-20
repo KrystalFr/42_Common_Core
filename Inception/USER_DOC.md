@@ -9,6 +9,16 @@ Services provided
 - `nginx` — TLS-terminating reverse proxy serving the site over HTTPS and
   forwarding PHP requests to `wordpress`.
 
+Preliminaries
+- Once you've cloned the repo use:
+```bash
+mkdir -p secrets && \
+echo "rootpassword" > secrets/db_root_password.txt && \
+echo "userpassword" > secrets/db_password.txt && \
+echo "adminpassword" > secrets/wp_admin_password.txt
+```
+to create a secret folder and set your passwords.
+
 Start and stop the project
 - Start (build images and run in background):
 
