@@ -48,7 +48,7 @@ Resources
 - WP-CLI: https://wp-cli.org/
 
 AI usage
-- I used AI to catch some synthax error, but also to help me debug by explaining some error messages and give me suggestions on what in my code could be going wrong.
+- I used AI to catch some synthax error, but also to help me debug by explaining error messages and give me suggestions on what in my code could be going wrong.
 - This README was also typed and phrased with assistance from an AI to ensure I gave all the required information, but I still read and approved all content and no AI-generated code was introduced without review.
 
 Additional notes
