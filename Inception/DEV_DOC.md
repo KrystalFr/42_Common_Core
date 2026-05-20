@@ -16,11 +16,19 @@ cd Inception
 ```
 
 Secrets and environment
-- The project consumes these secret files (place them in the repo `secrets/` folder):
+- The project consumes these secret files (create and place them in a `secrets/` folder at the root of the repo):
   - `db_password.txt` — MariaDB user password
   - `db_root_password.txt` — MariaDB root password
   - `wp_admin_password.txt` — WordPress admin password (optional)
 - Non-sensitive configuration is in `srcs/.env` (database name, user, domain).
+
+Example `srcs/.env`
+```env
+DOMAIN_NAME=krfranco.42.fr
+MYSQL_DATABASE=wordpress
+MYSQL_USER=wp_user
+MYSQL_PASSWORD=changeme
+```
 
 Host data directories
 - The compose file mounts host directories for persistent data. By default
@@ -85,7 +93,3 @@ Rebuild a single service
 docker compose -f srcs/docker-compose.yml build wordpress
 docker compose -f srcs/docker-compose.yml up -d wordpress
 ```
-
-Notes for contributors
-- If you change any host paths in `docker-compose.yml`, document them in this file.
-- Use the `secrets/` folder for sensitive data and avoid committing real passwords.

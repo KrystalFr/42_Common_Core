@@ -1,7 +1,6 @@
 # User documentation
 
-This document explains, in simple terms, how an end user or administrator can
-use the project.
+This document explains how an end user or administrator can use the project.
 
 Services provided
 - `mariadb` — stores WordPress data (database).
@@ -27,6 +26,18 @@ make down
 
 ```bash
 make fclean
+```
+
+- Force-stop without graceful shutdown:
+
+```bash
+make kill
+```
+
+- Rebuild from scratch (clean then build):
+
+```bash
+make restart
 ```
 
 Access the website and admin panel
@@ -75,6 +86,3 @@ docker compose -f srcs/docker-compose.yml exec wordpress wp user update krfranco
 docker compose -f srcs/docker-compose.yml exec mariadb mysql -u root -p
 # then enter the root password from secrets/db_root_password.txt
 ```
-
-If you need help
-- Send the project owner the output of `docker compose -f srcs/docker-compose.yml ps` and `docker compose -f srcs/docker-compose.yml logs --tail=200`.

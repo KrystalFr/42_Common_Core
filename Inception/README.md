@@ -47,22 +47,8 @@ Resources
 - Nginx: https://nginx.org/
 - WP-CLI: https://wp-cli.org/
 
-Project design notes
-- Virtual Machines vs Docker: Docker was chosen for faster startup, smaller
-  resource usage and easier image builds. VMs provide stronger isolation but
-  are heavier to run for a small dev/demo site.
-- Secrets vs Environment Variables: Sensitive values (DB passwords, admin
-  password) are stored in Docker `secrets/` files and consumed by the
-  containers. Non-sensitive configuration (DB name, domain) is stored in
-  `srcs/.env` to keep deployment flexible and visible to developers.
-- Docker Network vs Host Network: The stack uses a dedicated bridge network
-  (`inception`) so services can communicate by name (e.g., `mariadb`,
-  `wordpress`) while remaining isolated from other host services. Host network
-  would expose container ports directly on the host and reduce isolation.
-- Docker Volumes vs Bind Mounts: This project uses bind-mounted host folders
-  (configured in `docker-compose.yml` `driver_opts.device`) so data is stored
-  under `/home/krfranco/data/...` and is directly accessible from the host.
-  Bind mounts make inspection and backups easier during development.
+AI usage
+- This README was reviewed and phrased with assistance from an AI text assistant to ensure the required sections and clarity. I still read and approved all content; no AI-generated code was introduced without review.
 
 Additional notes
 - The project expects the host directories referenced in `docker-compose.yml`.
