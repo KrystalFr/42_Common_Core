@@ -1,57 +1,80 @@
 # User documentation
 
-This short guide explains, in simple terms, what the stack provides and how an end user or administrator can operate it.
+This document explains, in simple terms, how an end user or administrator can
+use the project.
 
-## What services are provided
+Services provided
+- `mariadb` — stores WordPress data (database).
+- `wordpress` — PHP-FPM container serving the WordPress application; contains
+  WP-CLI for automated setup.
+- `nginx` — TLS-terminating reverse proxy serving the site over HTTPS and
+  forwarding PHP requests to `wordpress`.
 
-- Web site: WordPress served by Nginx over HTTPS.
-- Database: MariaDB to store WordPress data.
+Start and stop the project
+- Start (build images and run in background):
 
-The stack is orchestrated by Docker Compose and the configuration lives in `srcs/docker-compose.yml`.
+```bash
+make build
+```
 
-## Start and stop the project
+- Stop:
 
-- Start (build + run detached):
+```bash
+make down
+```
 
-  `make build`
+- Remove everything (data will be removed):
 
-- Start (no build):
+```bash
+make fclean
+```
 
-  `make up`
-
-- Stop services:
-
-  `make down`
-
-- Completely remove data and prune images (destructive):
-
-  `make fclean`
-
-## Access the website and administration panel
-
-- Open a browser to `https://<DOMAIN_NAME>` replacing `<DOMAIN_NAME>` with the value in `srcs/.env` (for local testing you may use the host IP or edit `/etc/hosts` to point the domain to the host).
+Access the website and admin panel
+- Website: open `https://<DOMAIN_NAME>` where `<DOMAIN_NAME>` is set in
+  `srcs/.env` (default in repository: `krfranco.42.fr`).
 - Admin panel: `https://<DOMAIN_NAME>/wp-admin`
+- Default admin user created by the setup script: `krfranco`.
+  - Password is read from `secrets/wp_admin_password.txt` if present; otherwise
+    a fallback password is used. Check `secrets/wp_admin_password.txt` or the
+    `wordpress_config.sh` script for details.
 
-Default admin user configured by the provisioning script is `krfranco` (see `srcs/requirements/wordpress/tools/wordpress_config.sh`). The admin password is read from a Docker secret `wp_admin_password` if present, otherwise a fallback `krfranco` is used. For production change the password immediately.
+Locate and manage credentials
+- Non-sensitive config: `srcs/.env` (database name, user, domain).
+- Sensitive credentials: the repo `secrets/` folder contains the files used by
+  the containers. Do not commit real passwords.
+  - `secrets/db_password.txt` — password for the DB user
+  - `secrets/db_root_password.txt` — MariaDB root password
+  - `secrets/wp_admin_password.txt` — WordPress admin password (optional)
 
-## Locate and manage credentials
+Check services running correctly
+- Quick container status:
 
-- Secrets files (if used) are expected in `./secrets/` and are referenced by `srcs/docker-compose.yml`.
-- Example secret names referenced: `db_password`, `db_root_password`, `wp_admin_password`.
-- Non-sensitive configuration is in `srcs/.env`. Update domain and database name there.
+```bash
+docker compose -f srcs/docker-compose.yml ps
+```
 
-## Check that services are running correctly
+- Tail logs for a specific service:
 
-- List containers and status:
+```bash
+docker compose -f srcs/docker-compose.yml logs -f nginx
+```
 
-  `docker compose -f srcs/docker-compose.yml ps`
+- Verify site in browser on HTTPS. If TLS errors appear in local dev, the
+  stack uses a self-signed certificate generated inside the `nginx` image.
 
-- Check logs for a service (example nginx):
+Common tasks
+- Reset WordPress admin password using WP-CLI (run inside `wordpress` container):
 
-  `docker compose -f srcs/docker-compose.yml logs nginx --tail=200`
+```bash
+docker compose -f srcs/docker-compose.yml exec wordpress wp user update krfranco --user_pass=<newpass> --allow-root --path=/var/www/wordpress
+```
 
-- Quick health check (from host):
+- Connect to MariaDB (from host):
 
-  `curl -k https://$(grep DOMAIN_NAME srcs/.env | cut -d'=' -f2)`
+```bash
+docker compose -f srcs/docker-compose.yml exec mariadb mysql -u root -p
+# then enter the root password from secrets/db_root_password.txt
+```
 
-If you need help resetting the admin password, exporting/importing a database dump, or migrating content, tell me the preferred workflow and I can add step-by-step instructions.
+If you need help
+- Send the project owner the output of `docker compose -f srcs/docker-compose.yml ps` and `docker compose -f srcs/docker-compose.yml logs --tail=200`.
