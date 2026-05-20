@@ -17,6 +17,13 @@ if [ ! -S "/run/mysqld/mysqld.sock" ]; then
     exit 1
 fi
 
+# Lire les secrets Docker si disponibles
+if [ -f /run/secrets/db_password ]; then
+    export MYSQL_PASSWORD=$(cat /run/secrets/db_password)
+fi
+if [ -f /run/secrets/db_root_password ]; then
+    export MYSQL_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
+fi
 
 # Créer la base de données
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;"

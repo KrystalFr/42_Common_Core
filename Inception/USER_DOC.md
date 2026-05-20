@@ -1,84 +1,57 @@
-# User Documentation
+# User documentation
 
-## Overview
-This stack provides:
-- `mariadb` — MariaDB database (MySQL-compatible).
-- `wordpress` — WordPress PHP application.
-- `nginx` — Reverse proxy / TLS termination serving WordPress.
+This short guide explains, in simple terms, what the stack provides and how an end user or administrator can operate it.
 
-Services are defined in `srcs/docker-compose.yml`.
+## What services are provided
 
-## Start / Stop
-Start the project (detached, build if needed):
-- Using Docker Compose:
-```bash
-docker-compose -f srcs/docker-compose.yml up -d --build
-```
-- Using the project's Makefile:
-```bash
-make build
-```
+- Web site: WordPress served by Nginx over HTTPS.
+- Database: MariaDB to store WordPress data.
 
-Stop the project:
-```bash
-docker-compose -f srcs/docker-compose.yml down --volumes --remove-orphans
-```
-or
-```bash
-make down
-```
+The stack is orchestrated by Docker Compose and the configuration lives in `srcs/docker-compose.yml`.
 
-For a destructive cleanup (removes containers and volumes):
-```bash
-make clean
-```
-or remove manually:
-```bash
-docker-compose -f srcs/docker-compose.yml down -v
-```
+## Start and stop the project
 
-## How to Access
-- Website (via Nginx): https://localhost (or https://<host-ip> if running remotely). Nginx listens on port 443 per the compose file.
-- WordPress admin panel: https://localhost/wp-admin
+- Start (build + run detached):
 
-If you run on a remote host, replace `localhost` with the host IP or domain pointing at the host.
+  `make build`
 
-## Credentials
-- Database credentials are provided via the repository `.env` file used by docker-compose. Look for:
-  - `MYSQL_USER`
-  - `MYSQL_PASSWORD`
-  - `MYSQL_DATABASE`
-Place or update these in your repository root `.env` before first `up`.
+- Start (no build):
 
-If your WordPress admin user was created during build/config scripts, find any defaults or creation steps in:
-- `srcs/requirements/wordpress/tools/wordpress_config.sh` (if present).
+  `make up`
 
-## Where data is stored / persistence
-This project binds volumes to host paths (see `srcs/docker-compose.yml`):
-- MariaDB data: `/home/krfranco/data/mariadb`
-- WordPress files: `/home/krfranco/data/wordpress`
+- Stop services:
 
-Backups: copy those host directories or use `mysqldump` inside the MariaDB container.
+  `make down`
 
-## Check services are running
-- List containers:
-```bash
-docker ps
-```
-- Compose status:
-```bash
-docker-compose -f srcs/docker-compose.yml ps
-```
-- Follow logs:
-```bash
-docker-compose -f srcs/docker-compose.yml logs -f
-```
-- Test HTTP(S):
-```bash
-curl -k https://localhost/    # -k to ignore self-signed TLS if applicable
-```
+- Completely remove data and prune images (destructive):
 
-## Troubleshooting quick tips
-- If ports are already in use, free them (443, 3306) or change host mapping in `srcs/docker-compose.yml`.
-- If WordPress cannot reach DB, ensure `.env` values match and MariaDB is healthy (`docker-compose logs mariadb`).
-- Inspect persisted files under `/home/krfranco/data/...` to confirm write permissions.
+  `make fclean`
+
+## Access the website and administration panel
+
+- Open a browser to `https://<DOMAIN_NAME>` replacing `<DOMAIN_NAME>` with the value in `srcs/.env` (for local testing you may use the host IP or edit `/etc/hosts` to point the domain to the host).
+- Admin panel: `https://<DOMAIN_NAME>/wp-admin`
+
+Default admin user configured by the provisioning script is `krfranco` (see `srcs/requirements/wordpress/tools/wordpress_config.sh`). The admin password is read from a Docker secret `wp_admin_password` if present, otherwise a fallback `krfranco` is used. For production change the password immediately.
+
+## Locate and manage credentials
+
+- Secrets files (if used) are expected in `./secrets/` and are referenced by `srcs/docker-compose.yml`.
+- Example secret names referenced: `db_password`, `db_root_password`, `wp_admin_password`.
+- Non-sensitive configuration is in `srcs/.env`. Update domain and database name there.
+
+## Check that services are running correctly
+
+- List containers and status:
+
+  `docker compose -f srcs/docker-compose.yml ps`
+
+- Check logs for a service (example nginx):
+
+  `docker compose -f srcs/docker-compose.yml logs nginx --tail=200`
+
+- Quick health check (from host):
+
+  `curl -k https://$(grep DOMAIN_NAME srcs/.env | cut -d'=' -f2)`
+
+If you need help resetting the admin password, exporting/importing a database dump, or migrating content, tell me the preferred workflow and I can add step-by-step instructions.

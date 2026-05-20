@@ -1,124 +1,78 @@
-*This project has been created as part of the 42 curriculum by krfranco.*
+*This project has been created as part of the 42 curriculum by <login1>, <login2>[, <login3>...].*
 
-# Inception — WordPress stack (Nginx + MariaDB + WordPress)
+# Inception — WordPress stack (Nginx + PHP-FPM + MariaDB)
 
 ## Description
-This repository builds a small WordPress stack using Docker and Docker Compose. The stack provides:
-- `mariadb` — MariaDB database (MySQL-compatible)
-- `wordpress` — WordPress application
-- `nginx` — Reverse proxy and TLS termination serving WordPress
 
-The project is intended for local development and evaluation of container orchestration using Docker Compose. It demonstrates practical setup choices for persistence, networking, and configuration using bind mounts and environment variables.
+Inception is a small Docker Compose stack that deploys a WordPress site served by Nginx and PHP-FPM with a MariaDB backend. The goal is to provide a reproducible, documented environment using Docker Compose for development and demonstration purposes.
+
+Services included:
+- `mariadb` — database server used by WordPress
+- `wordpress` — PHP-FPM + WordPress
+- `nginx` — reverse proxy and TLS termination
+
+This repository contains Dockerfiles and service configuration under `srcs/` and orchestration via `srcs/docker-compose.yml`.
 
 ## Instructions
-### Prerequisites
-- Docker engine installed and running
-- Docker Compose (v1 or v2 CLI) available
-- GNU `make` (optional, convenience targets)
-- Ensure host ports `443` and `3306` are available or update `srcs/docker-compose.yml`
 
-### Setup from scratch
-1. Clone the repository and change to the project directory:
-```bash
-git clone <repo-url>
-cd Inception
-```
-2. Create a `.env` file in the repository root with at least the database variables:
-```
-MYSQL_ROOT_PASSWORD=strong_root_password
-MYSQL_USER=wp_user
-MYSQL_PASSWORD=wp_password
-MYSQL_DATABASE=wordpress
-```
-3. Ensure the host directories for persistence exist (the compose file uses these absolute paths):
-- `/home/krfranco/data/mariadb`
-- `/home/krfranco/data/wordpress`
+- Build and start the stack (creates host data directories and starts containers in background):
 
-### Build and run
-- Build & start (detached):
-```bash
-make build
-# or directly:
-docker-compose -f srcs/docker-compose.yml up -d --build
-```
-- Stop:
-```bash
-make down
-# or:
-docker-compose -f srcs/docker-compose.yml down
-```
-- Clean (stop + remove volumes):
-```bash
-make clean
-# or:
-docker-compose -f srcs/docker-compose.yml down -v
-```
-- Full cleanup (remove host data and prune):
-```bash
-make fclean
-```
+  `make build`
 
-### Accessing the services
-- Website: https://localhost/ (Nginx listens on port 443 per compose)
-- WordPress admin: https://localhost/wp-admin
+- Start services without building:
 
-If running remotely, replace `localhost` with the host IP or domain.
+  `make up`
 
-### Inspecting status
-- List containers:
-```bash
-docker ps
-```
-- Compose status:
-```bash
-docker-compose -f srcs/docker-compose.yml ps
-```
-- Follow logs:
-```bash
-docker-compose -f srcs/docker-compose.yml logs -f
-```
-- Exec into a service:
-```bash
-docker-compose -f srcs/docker-compose.yml exec wordpress sh
-```
+- Stop services:
+
+  `make down`
+
+- Force-stop containers:
+
+  `make kill`
+
+- Remove data and prune images (destructive):
+
+  `make fclean`
+
+See [Makefile](Makefile) and [srcs/docker-compose.yml](srcs/docker-compose.yml) for details and available targets.
 
 ## Resources
+
 - Docker: https://docs.docker.com/
 - Docker Compose: https://docs.docker.com/compose/
-- WordPress Developer Resources: https://developer.wordpress.org/
+- WordPress: https://wordpress.org/
+- WP-CLI: https://wp-cli.org/
 - MariaDB: https://mariadb.org/
+- Nginx: https://nginx.org/
 
-## Project description & design choices
-This section explains key design decisions and compares alternatives.
+AI usage
+- If AI-assisted tools were used to create or revise documentation or scripts, document what was done here (which files or sections AI helped with). If none, you can remove this line.
+
+## Project design choices
+
+This section explains the main design choices and a short comparison according to the project requirements.
 
 - Virtual Machines vs Docker
-  - Virtual machines provide strong isolation (separate kernels) and are suitable for production VMs, but are heavier in resources and slower to provision.
-  - Docker containers are lightweight, start quickly, and are ideal for packaging services and local development. This project uses Docker to simplify reproducible development environments and fast iteration.
+
+  - Chosen: Docker. Docker provides fast, lightweight isolation and is well suited for packaging the web stack and its dependencies. VMs would add more overhead and are unnecessary for this service-oriented stack.
 
 - Secrets vs Environment Variables
-  - Environment variables are convenient and supported by Docker Compose (`.env`) for non-sensitive configuration like database names or usernames.
-  - Secrets (Docker secrets or external secret stores) are more secure for production secrets (passwords, API keys). For this project we use an `.env` for simplicity; for production migrate secrets to a dedicated secret manager.
+
+  - Chosen: mixture. Secrets are declared in `docker-compose.yml` for database passwords (see `secrets:`) and the stack also loads values from `srcs/.env`. Use secrets for sensitive data (database passwords), and env files for non-sensitive configuration (domain name, database name, usernames). Note: the current `.env` file uses `SQL_` variable names — update it to provide `MYSQL_DATABASE`, `MYSQL_USER`, `MYSQL_PASSWORD`, `MYSQL_ROOT_PASSWORD` if you prefer env-file based credentials instead of Docker secrets.
 
 - Docker Network vs Host Network
-  - Bridge networks (the default) isolate containers and provide DNS-based service discovery. They are preferred for multi-service stacks to avoid host port collisions and to allow finer control of access.
-  - Host networking removes network isolation and binds ports directly on the host—useful for low-latency or when container network behavior must match host. This project uses a custom bridge network (`inception`) defined in `srcs/docker-compose.yml`.
+
+  - Chosen: bridge network (`inception`). Services communicate internally on a user-defined bridge network so we can keep the database unexposed to the host while exposing Nginx on port `443` only.
 
 - Docker Volumes vs Bind Mounts
-  - Docker volumes managed by Docker are portable, easy to backup and are stored in Docker-managed locations.
-  - Bind mounts map host directories directly into containers. This project uses bind mounts to host paths under `/home/krfranco/data/...` so data is visible and persistent on the host; update paths if deploying on another machine.
 
-## Where data is stored
-- MariaDB data on host: `/home/krfranco/data/mariadb`
-- WordPress files on host: `/home/krfranco/data/wordpress`
+  - Chosen: bind mounts (host paths) for persistence. Volumes in `docker-compose.yml` are configured with `driver_opts` to bind `/home/krfranco/data/mariadb` and `/home/krfranco/data/wordpress` on the host. This makes it easy to inspect and persist data outside the containers.
 
-## How AI was used
-AI assistance was used interactively to draft documentation and Makefile suggestions. All content and changes should be reviewed and adjusted to meet your security and production requirements.
+## Where to look next
 
-## Notes and troubleshooting
-- If ports are in use, update `srcs/docker-compose.yml` or stop conflicting services.
-- If WordPress cannot connect to the database, verify `.env` values and check `docker-compose -f srcs/docker-compose.yml logs mariadb`.
-- If permission issues occur with the bind-mounted directories, ensure the host paths exist and have appropriate ownership/permissions for containers to write.
+- Configuration and service definitions: [srcs/docker-compose.yml](srcs/docker-compose.yml)
+- Service Dockerfiles and scripts: [srcs/requirements](srcs/requirements)
+- Environment file: [srcs/.env](srcs/.env)
 
----
-
-If you want, I can also create a `.env.example` file and update the `Makefile` to list service names automatically.
+If you'd like I can update `.env` to include recommended `MYSQL_` variables or move all secrets to environment files — tell me which approach you prefer.
