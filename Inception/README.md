@@ -48,7 +48,8 @@ Resources
 - WP-CLI: https://wp-cli.org/
 
 AI usage
-- This README was reviewed and phrased with assistance from an AI text assistant to ensure the required sections and clarity, but I still read and approved all content and no AI-generated code was introduced without review.
+- I used AI to catch some synthax error, but also to help me debug by explaining some error messages and give me suggestions on what in my code could be going wrong.
+- This README was also typed and phrased with assistance from an AI to ensure I gave all the required information, but I still read and approved all content and no AI-generated code was introduced without review.
 
 Additional notes
 - The project expects the host directories referenced in `docker-compose.yml`.
