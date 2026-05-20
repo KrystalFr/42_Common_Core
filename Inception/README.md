@@ -48,7 +48,7 @@ Resources
 - WP-CLI: https://wp-cli.org/
 
 AI usage
-- This README was reviewed and phrased with assistance from an AI text assistant to ensure the required sections and clarity. I still read and approved all content; no AI-generated code was introduced without review.
+- This README was reviewed and phrased with assistance from an AI text assistant to ensure the required sections and clarity, but I still read and approved all content and no AI-generated code was introduced without review.
 
 Additional notes
 - The project expects the host directories referenced in `docker-compose.yml`.
