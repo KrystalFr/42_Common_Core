@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:59:39 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/03 18:01:53 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/03 18:08:12 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ class MutantStack : public std::stack<T>
 	MutantStack &operator=(const MutantStack &other)
 	{
 		if (this != &other)
-		{
 			std::stack<T>::operator=(other);
-		}
 		return *this;
 	}
 	~MutantStack(){}
