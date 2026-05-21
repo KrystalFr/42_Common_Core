@@ -6,7 +6,7 @@ FROM debian:bookworm
 RUN apt update -y && apt upgrade -y && apt install wget tar -y
 
 #On télécharge et on installe php et les extensions nécessaires pour faire fonctionner wordpress
-RUN apt install php8.2 php8.2-mysql php8.2-fpm -y
+RUN apt install php8.2 php8.2-mysql php8.2-fpm mariadb-client -y
 
 RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/8.2/fpm/pool.d/www.conf
 
@@ -17,9 +17,6 @@ RUN tar -xvzf wordpress-6.9.4-fr_FR.tar.gz && \
     mv wordpress /var/www/  && \
     rm wordpress-6.9.4-fr_FR.tar.gz
 
-
-# On change les permissions du dossier wordpress pour que le serveur web puisse y accéder et y écrire si nécessaire
-RUN chown -R root:root /var/www/wordpress && chmod -R 755 /var/www/wordpress
 
 #On installe WP-CLI pour pouvoir gérer wordpress en ligne de commande, ce qui nous permettra de faire l'installation et la configuration de wordpress plus facilement dans le script d'auto-configuration
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
