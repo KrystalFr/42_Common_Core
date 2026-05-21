@@ -6,7 +6,7 @@
 #    By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/18 22:11:39 by krfranco          #+#    #+#              #
-#    Updated: 2026/05/20 23:30:01 by krfranco         ###   ########.fr        #
+#    Updated: 2026/05/21 23:45:38 by krfranco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,9 @@ down:
 
 kill:
 	docker compose -f ${COMPOSE_FILE} kill
+
+clean:
+	docker compose -f ${COMPOSE_FILE} down -v
 
 fclean: clean
 	rm -r /home/krfranco/data/mariadb
