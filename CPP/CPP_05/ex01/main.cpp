@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 03:24:42 by krfranco          #+#    #+#             */
-/*   Updated: 2025/11/11 19:58:39 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/24 19:31:42 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,19 @@
 
 //Bureaucrat: name, grade
 //Form: name, signGrade, execGrade
-int main()
+int main(int ac, char **av)
 {
 	try
 	{	
+		if (ac == 2)
+		{
+			std::string state = av[1];
+			if (state == "l")
+				Form error("error", 0, 10);
+			if (state == "h")
+				Form error("error", 10, 151);
+		}
+		
 		Bureaucrat good("Jean Parfait", 1);
 		Bureaucrat mid("Jean Padeursup", 74);
 		Bureaucrat bad("Jean Mediocre", 149);
