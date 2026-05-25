@@ -6,12 +6,17 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 14:41:31 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/25 15:18:07 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/25 16:29:39 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/AForm.hpp"
 #include "../includes/Bureaucrat.hpp"
+
+AForm::AForm():name("default"), signGrade(150), execGrade(150)
+{
+    this->state = false;
+}
 
 AForm::AForm(const std::string& n, const int sg, const int eg)
 	: name(n)

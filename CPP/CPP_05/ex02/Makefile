@@ -6,11 +6,11 @@
 #    By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/11/07 23:12:24 by krfranco          #+#    #+#              #
-#    Updated: 2026/03/03 16:41:38 by krfranco         ###   ########.fr        #
+#    Updated: 2026/05/25 16:54:13 by krfranco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Forms
+NAME = AForms
 
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98

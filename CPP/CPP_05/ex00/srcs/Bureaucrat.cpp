@@ -6,11 +6,13 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 02:16:31 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/25 15:17:24 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/25 16:24:18 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Bureaucrat.hpp"
+
+Bureaucrat::Bureaucrat() : name("Default"), grade(150) {}
 
 Bureaucrat::Bureaucrat(const std::string& n, int g) : name(n), grade(g)
 {
