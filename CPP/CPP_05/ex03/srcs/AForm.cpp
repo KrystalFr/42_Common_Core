@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 14:41:31 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/03 14:39:51 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:18:07 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ AForm::AForm(const std::string& n, const int sg, const int eg)
 	, execGrade(eg)
 	, state(false)
 {
-	std::cout << "Form: Default constructor called" << std::endl;
+	std::cout << "Form: Constructor called" << std::endl;
 	if (signGrade < 1 || execGrade < 1)
 		throw GradeTooHighException();
 	if (signGrade > 150 || execGrade > 150)

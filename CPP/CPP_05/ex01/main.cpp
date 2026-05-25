@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 03:24:42 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/24 19:31:42 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/25 14:38:35 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ int main(int ac, char **av)
 		if (ac == 2)
 		{
 			std::string state = av[1];
-			if (state == "l")
+			if (state == "low")
 				Form error("error", 0, 10);
-			if (state == "h")
+			if (state == "high")
 				Form error("error", 10, 151);
 		}
 		

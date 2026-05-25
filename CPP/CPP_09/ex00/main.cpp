@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 21:54:22 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/24 21:22:33 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/25 13:58:10 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,15 @@ std::string trim(const std::string &str)
 	return str.substr(start, end - start + 1);
 }
 
-bool parse_val(const std::string &str, double &out)
+bool parse_val(const std::string &str, double &val)
 {
+	//on lit str et si elle a des caractere stockable dans un double
+	// on les met dans val, ex: "42.5" -> 42.5
 	std::stringstream ss(str);
-	ss >> out;
+	ss >> val;
 	if (ss.fail())
 		return false;
+	//on check si y a un character invalide apres val, ex "42.5x"
 	char leftover;
 	if (ss >> leftover)
 		return false;
@@ -68,6 +71,30 @@ void process_input(const std::string input, const BitcoinExchange &btc)
 
 		double val;
 		if (!parse_val(val_str, val))
+		{
+			std::cerr << "Error: bad input => " << line << std::endl;
+			continue;
+		}
+		if (val < 0)
+		{
+			std::cerr << "Error: not a positive number." << std::endl;
+			continue;
+		}
+		if (val > 1000)
+		{
+			std::cerr << "Error: too large a number." << std::endl;
+			continue;
+		}
+
+		try
+		{
+			double rate = btc.getRate(date);
+			std::cout << date << " => " << val << rate * val << std::endl;
+		}
+		catch (const std::exception &)
+		{
+			std::cerr << "Error: bad input => " << line << std::endl;
+		}
 	}
 }
 
@@ -99,7 +126,7 @@ int main(int ac, char **av)
 		return 1;
 	}
 
-	processInput(input, *btc);
+	process_input(input, *btc);
 	delete btc;
 	return 0;
 }

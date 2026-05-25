@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 21:54:17 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/24 14:04:42 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/25 13:51:40 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ BitcoinExchange::BitcoinExchange()
 	load_db(db_path);
 }
 
-BitcoinExchange::BitcointExchange(const BitcoinExchange &other) : rates(other.rates) {}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) : rates(other.rates) {}
 
-BitcoinExchange::BitcointExchange(const BitcoinExchange &other)
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 {
 	if (this != &other)
 		rates = other.rates;
