@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 21:54:22 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/25 13:58:10 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:11:13 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void process_input(const std::string input, const BitcoinExchange &btc)
 	if (!infile.is_open())
 	{
 		std::cerr << "Error: could not open file." << std::endl;
-		return 1;
+		return;
 	}
 
 	std::string line;
@@ -58,7 +58,6 @@ void process_input(const std::string input, const BitcoinExchange &btc)
 		if (line.empty())
 			continue;
 			
-// verifier que chaque ligne a un separateur entre date et val et on garde sa position
 		std::string::size_type sep = line.find('|');
 		if (sep == std::string::npos)
 		{
@@ -88,8 +87,8 @@ void process_input(const std::string input, const BitcoinExchange &btc)
 
 		try
 		{
-			double rate = btc.getRate(date);
-			std::cout << date << " => " << val << rate * val << std::endl;
+			double rate = btc.get_rate(date);
+			std::cout << date << " => " << val << " = " << rate * val << std::endl;
 		}
 		catch (const std::exception &)
 		{
@@ -112,11 +111,11 @@ int main(int ac, char **av)
 	{
 		try
 		{
-			btc = new BitcoinExchange("data.cvs");
+			btc = new BitcoinExchange("data.csv");
 		}
 		catch (const std::exception &)
 		{
-			btc = new BitcoinExchange("../data.cvs");
+			btc = new BitcoinExchange("../data.csv");
 		}
 	}
 	catch (const std::exception &e)

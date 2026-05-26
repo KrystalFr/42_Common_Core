@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 21:54:29 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/24 13:56:19 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:09:39 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ class BitcoinExchange
 		BitcoinExchange &operator=(const BitcoinExchange &other);
 		~BitcoinExchange();
 		
-		double get_rates(const std::string &date) const;
+		double get_rate(const std::string &date) const;
 	
 	private:
-		std::map<std::string, double> rates;
+		std::map<std::string, double> rates; //on utilise map parce qu'on peut mettre les dates en clé et les rate en valeur associée
 
 		void load_db(const std::string &db_path);
 		bool is_valid_date(const std::string &date) const;
