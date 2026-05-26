@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:19:29 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/26 17:01:40 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/26 20:23:11 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,7 @@
 
 #include <stack>
 #include <list>
+#include <string>
+#include <exception>
 
 #endif
