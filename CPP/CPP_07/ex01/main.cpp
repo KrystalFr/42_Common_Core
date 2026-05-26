@@ -6,12 +6,12 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/07 14:49:56 by krfranco          #+#    #+#             */
-/*   Updated: 2026/03/13 13:59:51 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/26 18:50:40 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
 #include "iter.hpp"
+#include <iostream>
 
 template <typename E>
 void printElement(E &e)
