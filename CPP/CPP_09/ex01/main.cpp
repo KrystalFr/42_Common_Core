@@ -6,9 +6,11 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:18:40 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/26 16:45:03 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/27 14:44:46 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "RPN.hpp"
 
 int main(int ac, char **av)
 {
@@ -20,8 +22,14 @@ int main(int ac, char **av)
 	
 	try
 	{
-
+		const std::string input = av[1];
+		std::cout << RPN(input) << std::endl;
 	}
-	catch (const std::exception &)
-	std::cout << result << std::endl;
+	catch (const std::exception &e)
+	{
+		// std::cerr << e.what() << std::endl;
+		std::cerr << "Error" << std::endl;
+		return 1;
+	}
+	return 0;
 }

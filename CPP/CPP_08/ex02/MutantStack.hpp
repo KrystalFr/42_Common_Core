@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 14:59:39 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/03 18:08:12 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/05/27 18:15:04 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <stack>
 
+//on utilise les constructor de stack
 template<typename T>
 class MutantStack : public std::stack<T>
 {
@@ -32,7 +33,7 @@ class MutantStack : public std::stack<T>
 	}
 	~MutantStack(){}
 
-	//c est le container interne protégé dans std::stack, mais avec ma classe custom je peux y accéder et l'utiliser
+	//on utilise l'iterator de c (protected container dans stack)
 	iterator begin(){return this->c.begin();}
 	iterator end(){return this->c.end();}
 

@@ -6,7 +6,7 @@
 #    By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/03 21:53:27 by krfranco          #+#    #+#              #
-#    Updated: 2026/05/26 16:18:32 by krfranco         ###   ########.fr        #
+#    Updated: 2026/05/27 14:23:11 by krfranco         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = RPN
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp RNP.cpp
+SRCS = main.cpp RPN.cpp
 OBJS = ${SRCS:.cpp=.o}
 
 all: ${NAME}
