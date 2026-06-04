@@ -6,82 +6,59 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:19:26 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/27 14:51:56 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/06/04 13:06:52 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RPN.hpp"
 
-bool is_op(char c)
+bool is_op(const std::string &token)
 {
-	std::string op = "+-/*";
-	for (int i = 0; i < 4; ++i)
-	{
-		if (c == op[i])
-			return true;
-	}
-	return false;
+	return (token == "+" || token == "-" || token == "*" || token == "/");
 }
 
-int calculate(char op, int left, int right)
+int calculate(const std::string op, int left, int right)
 {
-	int res = 0;
-
-	if (op == '+')
-		res = left + right;
-	else if (op == '-')
-		res = left - right;
-	else if (op == '*')
-		res = left * right;
-	else if (op == '/')
+	if (op == "+")
+		return left + right;
+	else if (op == "-")
+		return left - right;
+	else if (op == "*")
+		return left * right;
+	else if (op == "/")
 	{
-		res = left / right;
+		if (right == 0)
+			throw std::runtime_error("division by zero");
+		return left / right;
 	}
-	
-	return res;
-}
-
-bool is_valid_input(const std::string &input)
-{
-	if (input.empty())
-		return false;
-	if (!std::isdigit(input[0]) || !is_op(input[input.size() - 1]))
-		return false;
-	for (size_t i = 0; i < input.size(); ++i)
-	{
-		if (input[i] != ' ')
-		{
-			if(i + 1 < input.size() && input[i + 1] != ' ')
-				return false;
-			if (!std::isdigit(input[i]) && !is_op(input[i]))
-				return false;
-		}
-	}
-	return true;
+	else
+		throw std::runtime_error("unknown operator");
 }
 
 int RPN(const std::string &input)
 {
-	if (!is_valid_input(input))
-		throw std::runtime_error("invalid token");
-	
 	std::stack<int, std::list<int> > st;
-	for (size_t i = 0; i < input.size(); ++i)
+	std::stringstream ss(input);
+	std::string token;
+	
+	while (ss >> token)
 	{
-		if (std::isdigit(input[i]))
-			st.push(input[i] - '0');
-			
-		if(is_op(input[i]))
+		if (token.size() == 1 && std::isdigit(token[0]))
+		{
+			st.push(token[0] - '0');
+		}
+		else if(is_op(token))
 		{
 			if (st.size() < 2)
     			throw std::runtime_error("bad expression");
-			int right = st.top();
-			st.pop();
-			int left = st.top();
-			st.pop();
-			st.push(calculate(input[i], left, right));
+			int right = st.top(); st.pop();
+			int left = st.top(); st.pop();
+			st.push(calculate(token, left, right));
 		}
+		else
+			throw std::runtime_error("invalid token");
 	}
+	
 	if (st.size() > 1)
 		throw std::runtime_error("bad expression");
 	int res = st.top();

@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:19:29 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/27 15:13:58 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/06/04 12:02:39 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 
 int RPN(const std::string &input);
 

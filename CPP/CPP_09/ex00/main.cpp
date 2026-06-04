@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/03 21:54:22 by krfranco          #+#    #+#             */
-/*   Updated: 2026/05/26 16:11:13 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/06/04 12:22:54 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void process_input(const std::string input, const BitcoinExchange &btc)
 			std::cerr << "Error: bad input => " << line << std::endl;
 			continue;
 		}
-//extrait une sous chaine a line et place l'avant separateur dans date et l'apres dans val_str
 		std::string date = trim(line.substr(0, sep));
 		std::string val_str = trim(line.substr(sep + 1));
 
