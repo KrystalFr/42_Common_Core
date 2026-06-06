@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:22:13 by krfranco          #+#    #+#             */
-/*   Updated: 2026/06/06 22:47:21 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/06/06 22:59:28 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ std::vector<int> ford_johnson_sort(const std::vector<int> &src)
     big = ford_johnson_sort(big);
 
     std::vector<std::size_t> order = jacobsthal_order(small.size());
-    for (std::size_t p = 0; p < order.size(); ++p) {
-        std::size_t idx = order[p];
+    for (std::size_t i = 0; i < order.size(); ++i) {
+        std::size_t idx = order[i];
         int val = small[idx];
         std::vector<int>::iterator pos = std::lower_bound(big.begin(), big.end(), val);
         big.insert(pos, val);
@@ -129,8 +129,8 @@ std::deque<int> ford_johnson_sort(const std::deque<int> &src)
     big = ford_johnson_sort(big);
 
     std::vector<std::size_t> order = jacobsthal_order(small.size());
-    for (std::size_t p = 0; p < order.size(); ++p) {
-        std::size_t idx = order[p];
+    for (std::size_t i = 0; i < order.size(); ++i) {
+        std::size_t idx = order[i];
         int val = small[idx];
         std::deque<int>::iterator pos = std::lower_bound(big.begin(), big.end(), val);
         big.insert(pos, val);
