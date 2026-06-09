@@ -1,8 +1,8 @@
 # Developer Documentation
 
-## Environment setup
+## Prerequisites
 
-Requirements:
+Install the following before working on the project:
 
 - Docker and Docker Compose
 - `make`
@@ -11,7 +11,9 @@ Requirements:
   - `db_password.txt`
   - `wp_admin_password.txt`
 
-Project configuration is mainly split between:
+## Project layout
+
+The main configuration files are split between:
 
 - [Makefile](Makefile)
 - [srcs/docker-compose.yml](srcs/docker-compose.yml)
@@ -20,7 +22,7 @@ Project configuration is mainly split between:
 - [srcs/requirements/nginx/](srcs/requirements/nginx/)
 - [srcs/requirements/wordpress/](srcs/requirements/wordpress/)
 
-## Build and launch
+## Setup and launch
 
 The simplest way to start the project is:
 
@@ -36,12 +38,18 @@ You can also use the compose file directly:
 docker compose -f srcs/docker-compose.yml up --build -d
 ```
 
-## Useful commands
+## Makefile usage
 
+- `make` or `sudo make` builds and starts the stack.
 - `make up` starts the stack without rebuilding.
 - `make down` stops the containers.
 - `make clean` stops the containers and removes volumes.
 - `make restart` performs a clean start.
+
+## Docker Compose commands
+
+- `docker compose -f srcs/docker-compose.yml up --build -d` builds and starts the stack in detached mode.
+- `docker compose -f srcs/docker-compose.yml down` stops the stack.
 - `docker compose -f srcs/docker-compose.yml logs` shows service logs.
 - `docker compose -f srcs/docker-compose.yml ps` shows container status.
 

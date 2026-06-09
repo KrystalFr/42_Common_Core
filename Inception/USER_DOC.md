@@ -8,24 +8,31 @@ This project provides a WordPress website backed by MariaDB and served through N
 - A MariaDB database to store WordPress content.
 - Persistent data stored on the host so the site survives container restarts.
 
-## How to start and stop the project
+## Before you start
 
-Before starting, make sure `srcs/.env` contains the expected values and the secret files exist in `secrets/`.
+Make sure the configuration files exist before launching the stack:
 
-.env
+- `srcs/.env` must contain the expected values.
+- The secret files must exist in `secrets/`.
+
+Example values:
+
 ```bash
 MYSQL_DATABASE=inception_db
 MYSQL_USER=inception_user
 DOMAIN_NAME=krfranco.42.fr
 ```
 
-make a secret folder and set passwords
+Create the secret files if needed:
+
 ```bash
 mkdir -p secrets && \
 echo "rootpassword" > secrets/db_root_password.txt && \
 echo "userpassword" > secrets/db_password.txt && \
 echo "adminpassword" > secrets/wp_admin_password.txt
 ```
+
+## Start and stop the stack
 
 Start the project with:
 
@@ -45,20 +52,20 @@ If you want to remove the containers and their volumes:
 make clean
 ```
 
-## How to access the website and admin panel
+## Access the website and admin panel
 
 - Open the domain defined in `srcs/.env` with HTTPS in your browser.
+- The website is served on port `443`.
 - The admin panel is available at `/wp-admin` after signing in.
-- The admin login is created during the WordPress setup script.
-- The site is served over port 443.
+- The WordPress admin account is created during the WordPress setup script.
 
-## How to locate and manage credentials
+## Manage credentials
 
 - Database and WordPress secrets are stored in the `secrets/` directory.
 - Database configuration values are stored in `srcs/.env`.
-- If you need to update a password, edit the corresponding secret file and rebuild the stack.
+- To change a password, edit the corresponding secret file and rebuild the stack.
 
-## How to check that services are running correctly
+## Basic checks
 
 - Run `docker ps` to confirm the containers are up.
 - Visit the website over HTTPS to confirm Nginx and WordPress are responding.
