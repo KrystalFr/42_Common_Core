@@ -12,6 +12,21 @@ This project provides a WordPress website backed by MariaDB and served through N
 
 Before starting, make sure `srcs/.env` contains the expected values and the secret files exist in `secrets/`.
 
+.env
+```bash
+MYSQL_DATABASE=inception_db
+MYSQL_USER=inception_user
+DOMAIN_NAME=krfranco.42.fr
+```
+
+make a secret folder and set passwords
+```bash
+mkdir -p secrets && \
+echo "rootpassword" > secrets/db_root_password.txt && \
+echo "userpassword" > secrets/db_password.txt && \
+echo "adminpassword" > secrets/wp_admin_password.txt
+```
+
 Start the project with:
 
 ```bash

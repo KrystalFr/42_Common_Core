@@ -51,8 +51,6 @@ Where to look for configuration files:
 - Nginx configuration: [srcs/requirements/nginx/conf/nginx.conf](srcs/requirements/nginx/conf/nginx.conf)
 - MariaDB Dockerfile and init scripts: [srcs/requirements/mariadb/](srcs/requirements/mariadb/)
 - WordPress Dockerfile and setup scripts: [srcs/requirements/wordpress/](srcs/requirements/wordpress/)
-- User documentation: [USER_DOC.md](USER_DOC.md)
-- Developer documentation: [DEV_DOC.md](DEV_DOC.md)
 
 Resources
 ---------
@@ -60,28 +58,36 @@ Resources
 - Docker documentation: https://docs.docker.com/
 - Docker Compose: https://docs.docker.com/compose/
 - Nginx: https://nginx.org/en/docs/
-- MariaDB: https://mariadb.org/
-- WordPress: https://wordpress.org/
-- My left neighbour
+- MariaDB: https://mariadb.org/documentation/
+- WordPress: https://wordpress.org/documentation/
+And peer-learning
 
 Project description and design choices
 --------------------------------------
 
-Virtual Machines vs Docker
+Virtual Machines vs Docker:
+
 - Virtual Machines: provide full OS isolation (heavier, larger images, slower startup). Good for running different OS kernels or full OS-level isolation.
-- Docker (containers): lightweight process-level isolation using the host kernel, faster startup, smaller images, easier to distribute and scale. This project uses Docker for faster iteration and reproducible environments.
+- Docker (containers): lightweight process-level isolation using the host kernel, faster startup, smaller images, easier to distribute and scale.
+This project uses Docker for faster iteration and reproducible environments.
 
-Secrets vs Environment Variables
+Secrets vs Environment Variables:
+
 - Environment variables are simple and commonly used for configuration (e.g., DB_USER, DB_PASSWORD). They can be exposed in process lists or compose files if not handled carefully.
-- Docker secrets (or external secret managers) provide safer handling for sensitive data, preventing accidental leakage in images or repo. Use secrets for production credentials; env vars are acceptable for local development with caution.
+- Docker secrets (or external secret managers) provide safer handling for sensitive data, preventing accidental leakage in images or repo.
+This project uses Docker secrets for production credentials and environment variables for local development and CI convenience — secrets reduce accidental leakage, while env vars simplify local iteration.
 
-Docker Network vs Host Network
+Docker Network vs Host Network:
+
 - Docker bridge/network isolates container networking and allows port mappings and controlled connectivity between containers.
-- Host network gives containers direct access to the host network stack (no NAT). It can solve some networking limitations but reduces isolation and may cause port conflicts. This project uses an isolated Docker network so services can communicate securely and predictably.
+- Host network gives containers direct access to the host network stack (no NAT). It can solve some networking limitations but reduces isolation and may cause port conflicts.
+This project uses an isolated Docker network so services can communicate securely and predictably.
 
-Docker Volumes vs Bind Mounts
+Docker Volumes vs Bind Mounts:
+
 - Volumes managed by Docker are portable and recommended for persistent data in production (managed by Docker, can be backed up and migrated).
 - Bind mounts map host directories into containers and are useful for local development and debugging (easy to edit files on the host), but can cause permission inconsistencies.
+This project uses Docker volumes for persistent data (e.g., MariaDB data) to ensure portability and correct ownership, and bind mounts selectively for local development when live-editing site files is needed.
 
 How AI was used
 -----------------
