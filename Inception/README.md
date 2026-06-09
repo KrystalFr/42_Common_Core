@@ -62,6 +62,7 @@ Resources
 - Nginx: https://nginx.org/en/docs/
 - MariaDB: https://mariadb.org/
 - WordPress: https://wordpress.org/
+- My left neighbour
 
 Project description and design choices
 --------------------------------------
