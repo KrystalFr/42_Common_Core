@@ -6,7 +6,7 @@
 /*   By: krfranco <krfranco@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/26 16:19:26 by krfranco          #+#    #+#             */
-/*   Updated: 2026/06/04 13:06:52 by krfranco         ###   ########.fr       */
+/*   Updated: 2026/06/10 18:44:37 by krfranco         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int calculate(const std::string op, int left, int right)
 		throw std::runtime_error("unknown operator");
 }
 
+//structure de pile Last In First Out
 int RPN(const std::string &input)
 {
 	std::stack<int, std::list<int> > st;
