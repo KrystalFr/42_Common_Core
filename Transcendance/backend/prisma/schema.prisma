@@ -1,0 +1,347 @@
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+enum UserStatus {
+  ONLINE
+  OFFLINE
+  IN_GAME
+}
+
+enum RoomStatus {
+  WAITING
+  IN_PROGRESS
+  FINISHED
+}
+
+enum RoundStatus {
+  COUNTDOWN
+  OPEN
+  LOCKED
+  REVEALED
+  FINISHED
+}
+
+enum ClaimTruthLabel {
+  TRUE
+  FALSE
+}
+
+enum PredictionResult {
+  WIN
+  LOSS
+  CANCELLED
+}
+
+enum GameStatus {
+  STARTING
+  IN_PROGRESS
+  FINISHED
+}
+
+enum BetAnswer {
+  FACT
+  FAKE
+}
+
+enum TransactionType {
+  BET
+  PAYOUT
+  BONUS
+  REFUND
+  PENALTY
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email          String        @unique 
+  displayName    String?       @unique 
+  role           String        @default("USER")
+  passwordHash   String?       
+  oauthProvider  String?       
+  oauthProviderId String?      
+  avatarUrl      String?       
+  status         UserStatus    @default(OFFLINE)
+  virtualBalance Int           @default(1000)
+  bankruptEpisode Int           @default(0)
+  recoveredEpisode Int          @default(0)
+  recoveryEligibleEpisode Int?
+  activeRoomId String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  rooms        Room[]        @relation("RoomHost")
+  activeRoom   Room?         @relation("ActiveRoom", fields: [activeRoomId], references: [id], onDelete: SetNull)
+  roomMembers  RoomMember[]
+  roomBans      RoomBan[]
+  bets         Bet[]
+  clipVotes    ClipVote[]
+  transactions Transaction[]
+  friends      Friend[]      @relation("Friendships")
+  friendOf     Friend[]      @relation("FriendTargets")
+  messages     Message[]
+  clipReports  ClipReport[]
+  createdClaims Claim[]    @relation("ClaimCreator")
+  achievements  AchievementUnlock[]
+
+  @@unique([oauthProvider, oauthProviderId])
+  @@index([activeRoomId])
+}
+
+model AchievementUnlock {
+  id              String   @id @default(cuid())
+  userId          String
+  achievementKey  String
+  unlockedAt      DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, achievementKey])
+  @@index([userId, unlockedAt])
+}
+
+model Friend {
+  id        String   @id @default(cuid())
+  userId    String
+  friendId  String
+  status    FriendStatus @default(ACCEPTED)
+  createdAt DateTime @default(now())
+
+  user   User @relation("Friendships", fields: [userId], references: [id])
+  friend User @relation("FriendTargets", fields: [friendId], references: [id])
+
+  @@unique([userId, friendId])
+  @@index([userId])
+  @@index([friendId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([roomId])
+  @@index([userId])
+}
+
+model RoomPresence {
+  socketId    String   @id
+  userId      String
+  roomId      String
+  lastSeenAt  DateTime @default(now())
+
+  roomMember RoomMember @relation(fields: [roomId, userId], references: [roomId, userId], onDelete: Cascade)
+
+  @@index([roomId, lastSeenAt])
+  @@index([userId, lastSeenAt])
+}
+
+model Room {
+  id        String     @id @default(cuid())
+  name      String
+  status    RoomStatus @default(WAITING)
+  createdBy String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  host     User     @relation("RoomHost", fields: [createdBy], references: [id])
+  activeUsers User[] @relation("ActiveRoom")
+  rounds   Round[]
+  game     Game?
+  members  RoomMember[]
+  bans     RoomBan[]
+  messages Message[]
+  lobbyExpiresAt DateTime?
+}
+
+model RoomMember {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  ready     Boolean  @default(false)
+  joinedAt  DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  state     String   @default("NOT_READY")
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  presence RoomPresence[]
+
+  @@unique([roomId, userId])
+  @@index([roomId, ready])
+}
+
+model RoomBan {
+  id        String   @id @default(cuid())
+  roomId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([roomId, userId])
+  @@index([roomId])
+  @@index([userId])
+}
+
+model Game {
+  id        String     @id @default(cuid())
+  roomId    String     @unique
+  status    GameStatus @default(STARTING)
+  startedAt DateTime   @default(now())
+  finishedAt DateTime?
+  currentRoundIndex Int @default(0)
+
+  room   Room   @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  rounds Round[]
+
+  @@index([status])
+}
+
+model Round {
+  id            String      @id @default(cuid())
+  roomId        String
+  gameId        String?
+  status        RoundStatus @default(OPEN)
+  currentClipIndex Int       @default(0)
+  opensAt       DateTime    @default(now())
+  locksAt       DateTime
+  revealedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  room        Room          @relation(fields: [roomId], references: [id])
+  game        Game?         @relation(fields: [gameId], references: [id], onDelete: Restrict)
+  bets        Bet[]
+  clipVotes   ClipVote[]
+  roundClaims RoundClaim[]
+}
+
+model Claim {
+  id         String          @id @default(cuid())
+  sourceKey  String?         @unique 
+  createdBy  String?
+  text       String
+  mediaRef   String?
+  videoEndS  Int?
+  truthLabel ClaimTruthLabel
+  category   String?
+  sourceUrl  String?
+  createdAt  DateTime        @default(now())
+
+  roundClaims RoundClaim[]
+  clipVotes   ClipVote[]
+  verdicts    ClaimVerdict[]
+  reports     ClipReport[]
+  creator    User?           @relation("ClaimCreator", fields: [createdBy], references: [id])
+
+  @@index([createdBy])
+}
+
+model RoundClaim {
+  id         String @id @default(cuid())
+  roundId    String
+  claimId    String
+  orderIndex Int
+
+  round Round @relation(fields: [roundId], references: [id])
+  claim Claim @relation(fields: [claimId], references: [id])
+
+  @@unique([roundId, orderIndex])
+}
+
+
+model ClipReport {
+  id        String   @id @default(cuid())
+  claimId   String
+  userId    String
+  roundId   String?
+  reason    String?
+  createdAt DateTime @default(now())
+
+  claim Claim @relation(fields: [claimId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+
+
+  @@unique([userId, claimId])
+  @@index([claimId])
+}
+
+model ClaimVerdict {
+  id          String  @id @default(cuid())
+  claimId     String  @unique
+  verdictText String
+  confidence  Float?
+  citations   Json?
+
+  claim Claim @relation(fields: [claimId], references: [id])
+}
+
+model Bet {
+  id        String         @id @default(cuid())
+  userId    String
+  roundId   String
+  stake     Int
+  payout    Int?
+  result    PredictionResult?
+  answer    BetAnswer?
+  amountConfirmedAt DateTime?
+  answeredAt DateTime?
+  debitedAt DateTime?
+  createdAt DateTime       @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  round Round @relation(fields: [roundId], references: [id])
+
+  @@unique([userId, roundId])
+  @@index([roundId])
+}
+
+model ClipVote {
+  id        String   @id @default(cuid())
+  userId    String
+  roundId   String
+  claimId   String
+  isFake    Boolean
+  createdAt DateTime @default(now())
+
+  user  User  @relation(fields: [userId], references: [id])
+  round Round @relation(fields: [roundId], references: [id])
+  claim Claim @relation(fields: [claimId], references: [id])
+
+  @@unique([userId, roundId, claimId])
+  @@index([roundId])
+  @@index([claimId])
+}
+
+model Transaction {
+  id           String          @id @default(cuid())
+  userId       String
+  type         TransactionType
+  amount       Int
+  balanceAfter Int
+  referenceId  String?         @unique 
+  createdAt    DateTime        @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId, createdAt])
+}

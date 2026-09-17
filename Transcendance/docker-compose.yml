@@ -1,0 +1,112 @@
+services:
+  postgres:
+    image: docker.io/pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-factarena}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - factarena
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set in .env}
+      FORTYTWO_CLIENT_ID: ${FORTYTWO_CLIENT_ID:?FORTYTWO_CLIENT_ID must be set in .env}
+      FORTYTWO_CLIENT_SECRET: ${FORTYTWO_CLIENT_SECRET:?FORTYTWO_CLIENT_SECRET must be set in .env}
+      FORTYTWO_CALLBACK_URL: ${FORTYTWO_CALLBACK_URL:?FORTYTWO_CALLBACK_URL must be set in .env}
+      FRONTEND_URL: ${FRONTEND_URL}
+      AI_SERVICE_URL: ${AI_SERVICE_URL}
+      SEED_DEMO_DATA: ${SEED_DEMO_DATA:-false}
+      SEED_DEMO_PASSWORD: ${SEED_DEMO_PASSWORD:-}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "3000"
+    volumes:
+      - backend_uploads:/app/uploads
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:3000/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+    networks:
+      - factarena
+    restart: unless-stopped
+
+  ai-service:
+    build: ./ai-service
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      LLM_API_KEY: ${LLM_API_KEY:?LLM_API_KEY must be set in .env}
+      LLM_MODEL: ${LLM_MODEL:?LLM_MODEL must be set in .env}
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)\""]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - factarena
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    expose:
+      - "4173"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:4173/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    networks:
+      - factarena
+    restart: unless-stopped
+
+  nginx:
+    build: ./nginx
+    depends_on:
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    ports:
+      - "8443:443"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    networks:
+      - factarena
+    restart: unless-stopped
+
+networks:
+  factarena:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  backend_uploads:

@@ -1,0 +1,22 @@
+services:
+  frontend:
+    volumes:
+      - ./frontend:/app:Z
+      - /app/node_modules
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+  backend:
+    user: "root"
+    volumes:
+      - ./backend:/app:Z
+      - backend_uploads:/app/uploads
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      SEED_DEMO_DATA: "true"
+    command: ["sh", "-c", "npx prisma db push --skip-generate && npm run start:dev"]
+
+  ai-service:
+    volumes:
+      - ./ai-service:/app
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

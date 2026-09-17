@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+
+@theme {
+	--color-noir-krystal: #221f22;
+	--color-gris-krystal: #2d2a2e;
+	--color-grisclair-krystal: #403e41;
+	--color-bleu-d: #2563EB;
+	--color-bleu-l: #5C8AF0;
+	--color-red-d: #7D1811;
+	--color-red-l: #ED8179;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@layer components {
+	.button-blue-d {
+		@apply inline-flex items-center justify-center rounded-xl bg-gris-krystal border-3 border-bleu-d text-white font-semibold transition-colors hover:bg-bleu-d hover:text-white;
+	}
+	.button-red-d {
+		@apply inline-flex items-center justify-center rounded-xl bg-gris-krystal border-3 border-red-d text-white font-semibold transition-colors hover:bg-red-d hover:text-white;
+	}
+	.button-blue-l {
+		@apply inline-flex items-center justify-center rounded-xl bg-white border-3 border-bleu-l text-noir-krystal font-semibold transition-colors hover:bg-bleu-l hover:text-white;
+	}
+	.button-green-l {
+		@apply inline-flex items-center justify-center rounded-xl bg-white border-3 border-emerald-500 text-noir-krystal font-semibold transition-colors hover:bg-emerald-500 hover:text-white;
+	}
+	.button-red-l {
+		@apply inline-flex items-center justify-center rounded-xl bg-white border-3 border-red-l text-noir-krystal font-semibold transition-colors hover:bg-red-l hover:text-white;
+	}
+}
+
+html,
+body,
+#root {
+	width: 100%;
+	min-height: 100%;
+}
+
+body {
+	margin: 0;
+	overflow-x: hidden;
+	background: var(--color-noir-krystal);
+}
+
+body{
+	font-family: "Montserrat", sans-serif;
+}
+
+main{
+	padding:0px;
+}
+.premium-vote {
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+.premium-vote:hover:not(:disabled) { transform: translateY(-2px); }
+.premium-vote:disabled { opacity: .35; cursor: not-allowed; }
+.premium-vote-fact { color: rgb(110 231 183); box-shadow: inset 0 0 0 1px rgba(52,211,153,.08); }
+.premium-vote-fact:hover:not(:disabled) { box-shadow: 0 10px 30px rgba(16,185,129,.16); }
+.premium-vote-fake { color: rgb(252 165 165); box-shadow: inset 0 0 0 1px rgba(248,113,113,.08); }
+.premium-vote-fake:hover:not(:disabled) { box-shadow: 0 10px 30px rgba(239,68,68,.16); }
+.premium-bourse { color: rgb(254 240 138); box-shadow: inset 0 0 0 1px rgba(250, 204, 21, .08); }
+.premium-bourse:hover:not(:disabled) { box-shadow: 0 10px 30px rgba(234, 179, 8, .16); }

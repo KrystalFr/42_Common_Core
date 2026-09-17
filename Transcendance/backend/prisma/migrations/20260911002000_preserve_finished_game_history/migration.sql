@@ -1,0 +1,14 @@
+
+ALTER TABLE "Game"
+  DROP CONSTRAINT "Game_roomId_fkey";
+ALTER TABLE "Game"
+  ADD CONSTRAINT "Game_roomId_fkey"
+  FOREIGN KEY ("roomId") REFERENCES "Room"("id")
+  ON DELETE RESTRICT ON UPDATE CASCADE;
+
+ALTER TABLE "Round"
+  DROP CONSTRAINT "Round_gameId_fkey";
+ALTER TABLE "Round"
+  ADD CONSTRAINT "Round_gameId_fkey"
+  FOREIGN KEY ("gameId") REFERENCES "Game"("id")
+  ON DELETE RESTRICT ON UPDATE CASCADE;

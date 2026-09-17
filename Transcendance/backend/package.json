@@ -1,0 +1,76 @@
+{
+  "name": "factarena-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "FactArena — backend cœur (NestJS)",
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch",
+    "test:cov": "node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --coverage",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:seed": "prisma db seed",
+    "claims:import": "node prisma/import-claims.js",
+    "avatars:cleanup": "node prisma/cleanup-avatars.js",
+    "test:ledger:integration": "node prisma/ledger-integration.js"
+  },
+  "dependencies": {
+    "@nestjs/axios": "^12.0.0",
+    "@nestjs/common": "^12.0.1",
+    "@nestjs/core": "^12.0.1",
+    "@nestjs/jwt": "^12.0.1",
+    "@nestjs/passport": "^12.0.0",
+    "@nestjs/platform-express": "^12.0.1",
+    "@nestjs/platform-socket.io": "^12.0.1",
+    "@nestjs/websockets": "^12.0.1",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "bcryptjs": "^3.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "dotenv": "^17.4.2",
+    "jsonwebtoken": "^9.0.3",
+    "passport": "^0.7.0",
+    "passport-42": "^1.2.6",
+    "passport-local": "^1.0.0",
+    "pg": "^8.23.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "12.0.0",
+    "@nestjs/schematics": "12.0.0",
+    "@nestjs/testing": "12.0.1",
+    "@types/express": "5.0.6",
+    "@types/jest": "30.0.0",
+    "@types/node": "24.0.0",
+    "@types/pg": "8.23.1",
+    "jest": "30.5.1",
+    "multer": "2.3.0",
+    "prisma": "7.10.0",
+    "ts-jest": "29.4.12",
+    "ts-jest-resolver": "2.0.1",
+    "typescript": "6.0.3"
+  },
+  "overrides": {
+    "multer": "2.3.0",
+    "test-exclude": "8.0.0",
+    "deepmerge-ts": "^8.0.0",
+    "mysql2": "^3.23.1"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=24.15.0 <25"
+  },
+  "allowScripts": {
+    "prisma@7.10.0": true,
+    "@prisma/engines@7.10.0": true,
+    "@parcel/watcher@2.6.0": true,
+    "unrs-resolver@1.12.2": true
+  }
+}
